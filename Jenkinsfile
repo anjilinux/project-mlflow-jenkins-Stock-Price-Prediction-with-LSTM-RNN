@@ -81,14 +81,17 @@ pipeline {
             }
         }
 
-        stage('app.py') {
+        stage('Run Flask App') {
             steps {
                 sh '''
                 . venv/bin/activate
-                python app.py
+                nohup python app.py > flask.log 2>&1 &
+                sleep 25
+                curl http://localhost:5000/
                 '''
             }
         }
+
 
 
         stage('Test Model') {

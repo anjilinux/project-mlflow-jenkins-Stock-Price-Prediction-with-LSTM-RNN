@@ -5,7 +5,7 @@ from tensorflow.keras.models import load_model
 
 WINDOW_SIZE = 60
 MODEL_PATH = "models/lstm_model.keras"
-SCALER_PATH = "models/scaler.pkl"
+SCALER_PATH = "scaler.pkl"
 
 def load_assets():
     """Load trained model and scaler"""
@@ -31,5 +31,5 @@ def predict_next_price(csv_path):
     return float(prediction[0][0])
 
 if __name__ == "__main__":
-    price = predict_next_price("data/raw/stock_prices.csv")
+    price = predict_next_price("stock_prices.csv")
     print(f"📈 Predicted next closing price: {price}")

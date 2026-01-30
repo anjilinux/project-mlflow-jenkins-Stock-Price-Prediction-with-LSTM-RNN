@@ -1,7 +1,14 @@
+import pandas as pd     # ✅ MISSING IMPORT (FIX)
+import numpy as np
+from sklearn.preprocessing import MinMaxScaler
+import os
+
+WINDOW_SIZE = 60
+
 def prepare_data(
     raw_csv_path,
-    processed_csv_path="data/processed/processed.csv",
-    window_size=60
+    processed_csv_path="processed.csv",
+    window_size=WINDOW_SIZE
 ):
     df = pd.read_csv(raw_csv_path)
 

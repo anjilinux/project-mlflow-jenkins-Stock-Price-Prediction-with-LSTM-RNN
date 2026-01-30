@@ -5,29 +5,28 @@ import joblib
 from data_preprocessing import prepare_data
 from model import build_lstm
 
-# Set MLflow experiment
 mlflow.set_experiment("Stock_Price_LSTM")
 
-# Prepare data
-X, y, scaler = prepare_data("stock_prices.csv")
+X, y, scaler = prepare_data(
+    raw_csv_path="stock_prices.csv",
+    processed_csv_path="processed.csv",
+    window_size=60
+)
 
-# Save scaler for inference
 joblib.dump(scaler, "scaler.pkl")
 
 with mlflow.start_run():
 
-    # Build & train model
-    model = build_lstm((X.shape[1], X.shape[2]))
+    model = build_lstm((X.shape[1], 1))
     history = model.fit(X, y, epochs=10, batch_size=32)
 
-    # Log params & metrics
     mlflow.log_param("epochs", 10)
     mlflow.log_param("batch_size", 32)
+    mlflow.log_param("window_size", X.shape[1])
     mlflow.log_metric("loss", history.history["loss"][-1])
 
-    # Save model
     model.save("models/lstm_model.h5")
 
-    # Log artifacts
-    mlflow.tensorflow.log_model(model, artifact_path="model")
+    mlflow.tensorflow.log_model(model, "model")
     mlflow.log_artifact("scaler.pkl")
+    mlflow.log_artifact("processed.csv")

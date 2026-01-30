@@ -12,28 +12,19 @@ def prepare_data(
 ):
     df = pd.read_csv(raw_csv_path)
 
-    if len(df) < 3:
-        raise ValueError(
-            f"Dataset too small for time-series modeling. "
-            f"Found only {len(df)} rows."
-        )
-
-    # 🔥 AUTO-ADJUST WINDOW SIZE (KEY FIX)
-    window_size = min(window_size, len(df) - 1)
+    # Jenkins-safe: dynamic adjustment
+    window_size = min(window_size, max(len(df)-1, 1))
 
     close_df = df[['Close']].copy()
-
     scaler = MinMaxScaler()
     close_df['Close_scaled'] = scaler.fit_transform(close_df[['Close']])
 
     dir_name = os.path.dirname(processed_csv_path)
     if dir_name:
         os.makedirs(dir_name, exist_ok=True)
-
     close_df.to_csv(processed_csv_path, index=False)
 
     values = close_df['Close_scaled'].values
-
     X, y = [], []
     for i in range(window_size, len(values)):
         X.append(values[i-window_size:i])
@@ -42,7 +33,6 @@ def prepare_data(
     X = np.array(X).reshape(-1, window_size, 1)
     y = np.array(y)
 
-    # 🛡️ FINAL SAFETY CHECK
     if X.shape[0] == 0:
         raise RuntimeError("No training samples generated after preprocessing.")
 

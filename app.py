@@ -1,15 +1,20 @@
-from flask import Flask, request, jsonify
-import numpy as np
 from tensorflow.keras.models import load_model
+import joblib
+import numpy as np
 
-app = Flask(__name__)
-model = load_model("lstm_model.h5")
+MODEL_PATH = "models/lstm_model.keras"
+SCALER_PATH = "scaler.pkl"
 
-@app.route("/predict", methods=["POST"])
-def predict():
-    data = np.array(request.json["data"])
-    pred = model.predict(data).tolist()
-    return jsonify({"prediction": pred})
+# Load model WITHOUT recompiling
+model = load_model(MODEL_PATH, compile=False)
+scaler = joblib.load(SCALER_PATH)
+
+print("✅ Model loaded successfully")
+
+def predict(x):
+    x = np.array(x).reshape(1, -1, 1)
+    pred = model.predict(x)
+    return scaler.inverse_transform(pred)[0][0]
 
 if __name__ == "__main__":
-    app.run(port=5000)
+    print("🚀 App started successfully")

@@ -9,7 +9,7 @@ from model import build_lstm
 mlflow.set_experiment("Stock_Price_LSTM")
 
 # Prepare data
-X, y, scaler = prepare_data("data/raw/stock_prices.csv")
+X, y, scaler = prepare_data("stock_prices.csv")
 
 # Save scaler for inference
 joblib.dump(scaler, "models/scaler.pkl")

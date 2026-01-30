@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 import os
 
-DEFAULT_WINDOW_SIZE = 60
+DEFAULT_WINDOW_SIZE = 5
 
 def prepare_data(
     raw_csv_path,

@@ -1,22 +1,25 @@
-import pandas as pd     # ✅ MISSING IMPORT (FIX)
+import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 import os
 
-WINDOW_SIZE = 60
+DEFAULT_WINDOW_SIZE = 60
 
 def prepare_data(
     raw_csv_path,
     processed_csv_path="processed.csv",
-    window_size=WINDOW_SIZE
+    window_size=DEFAULT_WINDOW_SIZE
 ):
     df = pd.read_csv(raw_csv_path)
 
-    if len(df) <= window_size:
+    if len(df) < 3:
         raise ValueError(
-            f"Not enough data points. "
-            f"Need > {window_size}, found {len(df)}"
+            f"Dataset too small for time-series modeling. "
+            f"Found only {len(df)} rows."
         )
+
+    # 🔥 AUTO-ADJUST WINDOW SIZE (KEY FIX)
+    window_size = min(window_size, len(df) - 1)
 
     close_df = df[['Close']].copy()
 
@@ -38,5 +41,9 @@ def prepare_data(
 
     X = np.array(X).reshape(-1, window_size, 1)
     y = np.array(y)
+
+    # 🛡️ FINAL SAFETY CHECK
+    if X.shape[0] == 0:
+        raise RuntimeError("No training samples generated after preprocessing.")
 
     return X, y, scaler

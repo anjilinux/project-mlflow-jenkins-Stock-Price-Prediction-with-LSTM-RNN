@@ -50,6 +50,16 @@ pipeline {
         //     }
         // }
 
+        stage('Evaluate Model') {
+            steps {
+                sh '''
+                . venv/bin/activate
+                python evaluate.py
+                '''
+            }
+        }
+
+
 
         stage('Train Model') {
             steps {
@@ -60,14 +70,6 @@ pipeline {
             }
         }
 
-        stage('Evaluate Model') {
-            steps {
-                sh '''
-                . venv/bin/activate
-                python evaluate.py
-                '''
-            }
-        }
 
         stage('predic-py-file') {
             steps {

@@ -7,8 +7,8 @@ from sklearn.preprocessing import MinMaxScaler
 WINDOW_SIZE = 60
 
 def load_assets():
-    model = load_model("models/lstm_model.h5")
-    scaler = joblib.load("models/scaler.pkl")
+    model = load_model("lstm_model.h5")
+    scaler = joblib.load("caler.pkl")
     return model, scaler
 
 def prepare_input(csv_path):
@@ -18,7 +18,7 @@ def prepare_input(csv_path):
     scaler = MinMaxScaler()
     scaled = scaler.fit_transform(close_prices)
 
-    joblib.dump(scaler, "models/scaler.pkl")
+    joblib.dump(scaler, "scaler.pkl")
 
     last_window = scaled[-WINDOW_SIZE:]
     return np.expand_dims(last_window, axis=0), scaler
@@ -33,5 +33,5 @@ def predict_next_price(csv_path):
     return float(prediction[0][0])
 
 if __name__ == "__main__":
-    price = predict_next_price("data/raw/stock_prices.csv")
+    price = predict_next_price("stock_prices.csv")
     print(f"📈 Predicted next closing price: {price}")

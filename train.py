@@ -12,7 +12,7 @@ mlflow.set_experiment("Stock_Price_LSTM")
 X, y, scaler = prepare_data("stock_prices.csv")
 
 # Save scaler for inference
-joblib.dump(scaler, "models/scaler.pkl")
+joblib.dump(scaler, "scaler.pkl")
 
 with mlflow.start_run():
 
@@ -30,4 +30,4 @@ with mlflow.start_run():
 
     # Log artifacts
     mlflow.tensorflow.log_model(model, artifact_path="model")
-    mlflow.log_artifact("models/scaler.pkl")
+    mlflow.log_artifact("scaler.pkl")

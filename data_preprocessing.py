@@ -5,26 +5,30 @@ import os
 
 WINDOW_SIZE = 60
 
-def prepare_data(raw_csv_path, processed_csv_path="processed.csv"):
+def prepare_data(
+    raw_csv_path,
+    processed_csv_path="processed.csv"
+):
     df = pd.read_csv(raw_csv_path)
 
-    # Keep only required column
-    close_prices = df[['Close']].copy()
+    close_df = df[['Close']].copy()
 
     scaler = MinMaxScaler()
-    close_prices['Close_scaled'] = scaler.fit_transform(close_prices[['Close']])
+    close_df['Close_scaled'] = scaler.fit_transform(close_df[['Close']])
 
-    # Save processed data
-    os.makedirs(os.path.dirname(processed_csv_path), exist_ok=True)
-    close_prices.to_csv(processed_csv_path, index=False)
+    # ✅ SAFE directory creation
+    dir_name = os.path.dirname(processed_csv_path)
+    if dir_name:
+        os.makedirs(dir_name, exist_ok=True)
 
-    # Create sequences
-    scaled_values = close_prices['Close_scaled'].values
+    close_df.to_csv(processed_csv_path, index=False)
+
+    values = close_df['Close_scaled'].values
 
     X, y = [], []
-    for i in range(WINDOW_SIZE, len(scaled_values)):
-        X.append(scaled_values[i-WINDOW_SIZE:i])
-        y.append(scaled_values[i])
+    for i in range(WINDOW_SIZE, len(values)):
+        X.append(values[i-WINDOW_SIZE:i])
+        y.append(values[i])
 
     X = np.array(X).reshape(-1, WINDOW_SIZE, 1)
     y = np.array(y)

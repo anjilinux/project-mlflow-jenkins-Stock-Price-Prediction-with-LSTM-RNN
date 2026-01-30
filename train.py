@@ -25,7 +25,7 @@ with mlflow.start_run():
     mlflow.log_param("window_size", X.shape[1])
     mlflow.log_metric("loss", history.history["loss"][-1])
 
-    model.save("models/lstm_model.h5")
+    model.save("lstm_model.h5")
 
     mlflow.tensorflow.log_model(model, "model")
     mlflow.log_artifact("scaler.pkl")

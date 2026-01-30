@@ -1,9 +1,10 @@
 from tensorflow.keras.models import load_model
-from sklearn.metrics import mean_squared_error
-import numpy as np
+import os
 
-model = load_model("lstm_model.h5")
+MODEL_PATH = "models/lstm_model.h5"
 
-def evaluate(X_test, y_test):
-    preds = model.predict(X_test)
-    return mean_squared_error(y_test, preds)
+if not os.path.exists(MODEL_PATH):
+    raise FileNotFoundError(f"Model not found at {MODEL_PATH}. Run train.py first.")
+
+model = load_model(MODEL_PATH)
+print("Model loaded successfully!")

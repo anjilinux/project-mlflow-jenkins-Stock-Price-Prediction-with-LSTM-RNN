@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         MLFLOW_TRACKING_URI = "http://localhost:5555"
-        MLFLOW_EXPERIMENT_NAME = "Insurance_Pricing_XGBoost_v07"
+        MLFLOW_EXPERIMENT_NAME = "stock7"
     }
 
     stages {

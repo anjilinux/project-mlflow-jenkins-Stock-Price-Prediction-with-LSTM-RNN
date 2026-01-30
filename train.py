@@ -44,6 +44,13 @@ with mlflow.start_run():
     # Save model in **TensorFlow SavedModel format**
     MODEL_PATH = "lstm_model.keras"
     model.save(MODEL_PATH)
+    from tensorflow.keras import metrics
+
+    model.compile(
+        loss="mse",
+        optimizer="adam",
+        metrics=[metrics.MeanSquaredError()]  # ✅ object instead of "mse" string
+    )
 
     # Log model to MLflow
     mlflow.tensorflow.log_model(model, "model")

@@ -10,7 +10,7 @@ mlflow.set_experiment("Stock_Price_LSTM")
 X, y, scaler = prepare_data(
     raw_csv_path="stock_prices.csv",
     processed_csv_path="processed.csv",
-    window_size=60
+    window_size=5
 )
 
 joblib.dump(scaler, "scaler.pkl")

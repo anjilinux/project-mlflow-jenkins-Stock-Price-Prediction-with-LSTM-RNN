@@ -18,4 +18,4 @@ def predict(x):
     print("🚀 App started successfully","###@@final-value is###$$$$$%",pred,scaler.inverse_transform(pred)[0][0])
 
 if __name__ == "__main__":
-    print("🚀 App started successfully","###@@final-value is###$$$$$%",pred)
+    print("🚀 App started successfully","###@@final-value is###$$$$$%")

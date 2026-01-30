@@ -42,7 +42,7 @@ with mlflow.start_run():
     mlflow.log_metric("loss", history.history["loss"][-1])
 
     # Save model in **TensorFlow SavedModel format**
-    MODEL_PATH = "lstm_model.keras"
+    MODEL_PATH =  "models/lstm_model.keras"
     model.save(MODEL_PATH)
     from tensorflow.keras import metrics
 
